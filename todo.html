@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>代辦事項管理</title>
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+    <style media="screen">
+      li {
+        list-style: none;
+      }
+      .completed{
+        text-decoration: line-through;
+      }
+      .content{
+        width: 500px;
+        height: 100px;
+
+      }
+    </style>
+  </head>
+  <body onload="init()">
+    <h1>To Do List</h1>
+    <ul>
+      <li><input type="checkbox" name="" value="" onchange="toggle(event)">Learning JavaScript</li>
+      <li><input type="checkbox" name="" value="" onchange="toggle(event)">Learning CSS</li>
+    </ul>
+    <form class="" action="javascript:addtodo()" method="post">
+      使用者<input id="text" type="text" name="" value="">
+      事項<input id="tt" type="text" name="" value="">
+      <input type="submit" name="" value="新增事項">
+    </form>
+    <div class="content">
+      <button id="ajb">start</button>
+
+    </div>
+
+
+    <script type="text/javascript">
+        function addtodo(){
+          $("ul").append('<li><input type="checkbox" name="" value="" onchange="toggle(event)">'+("使用者:")+$("#text").val()+("    ")+("事項:")+$("#tt").val()+'</li>');
+        }
+        function toggle(event){
+          if($(event.target).prop("checked")===true)
+             $(event.target).parent().addClass("completed");
+         else
+             $(event.target).parent().removeClass("completed");
+        }
+
+//fetch start
+// function init() {
+//   $("#ajb").on("click",function(){
+//     $.getJSON("todo.data",function(data){
+//       var str = "";
+//       data.map((item)=>{
+//         str += "<input type='checkbox'> "+item.name +item.thing+ "<br>";
+//       })
+//       $(".content").html(str);
+//     });
+//   });
+// }
+//ajax start
+        function init() {
+          $("#ajb").on("click",function(){
+              fetch("todo.data")
+              .then(function(resp){
+                return resp.json();
+              })
+              .then(function(jdata){
+                var str="";
+                jdata.map((item)=>{
+                  str += "<input type='checkbox'>"+item.name+"<br>";
+                });
+                $(".content").html(str);
+              })
+              .catch(function(error){
+                console.log(error);
+              });
+          });
+        }
+  //
+        // function init() {
+        //
+        //   $("#ajb").on("click",function(){
+        //     fetch("http://jsonplaceholder.typicode.com/todos")
+        //       .then(function(resp){
+        //         return resp.json();
+        //       })
+        //       .then(function(jdata){
+        //         var str="";
+        //         jdata.map((item)=>{
+        //           str += "<input type='checkbox'>"+item.title+"<br>";
+        //         });
+        //         $(".content").html(str);
+        //       })
+        //       .catch(function(error){
+        //         console.log(error);
+        //       });
+        //   });
+        // }
+    </script>
+  </body>
+</html>
